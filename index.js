@@ -1,13 +1,21 @@
 import React from "react";
 import {requireNativeComponent} from "react-native";
 
-const NativeContextMenu = requireNativeComponent("ContextMenu", null);
+const NativeContextMenu = requireNativeComponent("ContextMenu");
 
-const ContextMenu = ({children, ...props}) => {
+const ContextMenu = (props) => {
   return (
-    <NativeContextMenu {props}>
-      {children}
-    </NativeContextMenu>
+      <NativeContextMenu
+          title={props.title}
+          actions={props.actions}
+          onPress={props.onPress}
+          onCancel={props.onCancel}
+          previewBackgroundColor={props.previewBackgroundColor}
+          dropdownMenuMode={props.dropdownMenuMode}
+          previewSourceUri={props.previewSourceUri}
+      >
+        {props.children}
+      </NativeContextMenu>
   );
 };
 
