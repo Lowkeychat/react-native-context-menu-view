@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NativeSyntheticEvent, ViewProps, ViewStyle } from 'react-native';
+import {ImageURISource, NativeSyntheticEvent, ViewProps, ViewStyle} from 'react-native';
 
 export interface ContextMenuAction {
 	/**
@@ -58,6 +58,10 @@ export interface ContextMenuProps extends ViewProps {
 	 * When enabled, uses iOS 14 menu mode, and shows the context menu on a single tap with no zoomed preview.
 	 */
 	dropdownMenuMode?: boolean;
+	/**
+	 * Image or GIF preview source
+	 */
+	previewSource?: ImageURISource;
 }
 
 export default class ContextMenu extends Component<ContextMenuProps> { }
