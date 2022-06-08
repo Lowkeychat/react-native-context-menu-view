@@ -61,8 +61,10 @@
               imageView.sd_imageTransition.duration = 0.25;
               [imageView setShouldIncrementalLoad:false];
 
-              CGFloat scale = UIScreen.mainScreen.scale;
-              CGSize thumbnailSize = CGSizeMake(self.frame.size.width * scale, self.frame.size.height * scale);
+              CGFloat windowWidth = UIScreen.mainScreen.bounds.size.width * UIScreen.mainScreen.scale;
+              CGFloat windowHeight = UIScreen.mainScreen.bounds.size.height * UIScreen.mainScreen.scale;
+
+              CGSize thumbnailSize = CGSizeMake(windowWidth, windowHeight);
 
               NSURL* url = [NSURL URLWithString:self->_previewSourceUri];
               [imageView sd_setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveLoad context:@{SDWebImageContextImageThumbnailPixelSize : @(thumbnailSize)}];
@@ -73,14 +75,17 @@
               [viewController setView:imageView];
 
               [NSLayoutConstraint activateConstraints:@[
-                  [imageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                  [imageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                  [imageView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                  [imageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                    [imageView.leadingAnchor constraintEqualToAnchor:viewController.self.view.leadingAnchor],
+                    [imageView.trailingAnchor constraintEqualToAnchor:viewController.self.view.trailingAnchor],
+                    [imageView.topAnchor constraintEqualToAnchor:viewController.self.view.topAnchor],
+                    [imageView.bottomAnchor constraintEqualToAnchor:viewController.self.view.bottomAnchor]
               ]];
 
-              CGFloat width = self.bounds.size.width;
-              CGFloat height = imageView.frame.size.height * (width / imageView.frame.size.width);
+              CGFloat imageWidth = windowWidth;
+              CGFloat imageHeight = windowHeight;
+
+              CGFloat width = viewController.view.bounds.size.width;
+              CGFloat height = imageHeight * (width / imageWidth);
               CGSize contentSize = CGSizeMake(width, height);
 
               [viewController setPreferredContentSize:contentSize];
