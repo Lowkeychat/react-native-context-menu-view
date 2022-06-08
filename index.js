@@ -6,7 +6,7 @@ const NativeContextMenu = requireNativeComponent("ContextMenu", null);
 const ContextMenu = ({children, ...props}) => {
   return (
     <NativeContextMenu {props}>
-      {props.children}
+      {children}
     </NativeContextMenu>
   );
 };
