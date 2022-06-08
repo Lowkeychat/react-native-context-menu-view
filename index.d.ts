@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ImageURISource, NativeSyntheticEvent, ViewProps, ViewStyle} from 'react-native';
+import {NativeSyntheticEvent, ViewProps, ViewStyle} from 'react-native';
 
 export interface ContextMenuAction {
 	/**
@@ -59,9 +59,9 @@ export interface ContextMenuProps extends ViewProps {
 	 */
 	dropdownMenuMode?: boolean;
 	/**
-	 * Image or GIF preview source
+	 * Image or GIF preview source URI
 	 */
-	previewSource?: ImageURISource;
+	previewSourceUri?: string;
 }
 
 export default class ContextMenu extends Component<ContextMenuProps> { }
