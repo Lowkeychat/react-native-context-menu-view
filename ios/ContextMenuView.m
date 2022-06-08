@@ -1,13 +1,6 @@
-//
-//  ContextMenu.m
-//  reactnativeuimenu
-//
-//  Created by Matthew Iannucci on 10/6/19.
-//  Copyright © 2019 Matthew Iannucci. All rights reserved.
-//
-
 #import "ContextMenuView.h"
 #import <React/UIView+React.h>
+#import <SDWebImage/SDWebImage.h>
 
 @interface ContextMenuView ()
 
@@ -61,7 +54,39 @@
 - (nullable UIContextMenuConfiguration *)contextMenuInteraction:(nonnull UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location API_AVAILABLE(ios(13.0)) {
   return [UIContextMenuConfiguration
           configurationWithIdentifier:nil
-          previewProvider:nil
+          previewProvider:self->_previewSourceUri == nil ? nil : ^() {
+              UIViewController* viewController = [[UIViewController alloc] init];
+              SDAnimatedImageView* imageView = [SDAnimatedImageView new];
+              imageView.sd_imageTransition = SDWebImageTransition.fadeTransition;
+              imageView.sd_imageTransition.duration = 0.25;
+              [imageView setShouldIncrementalLoad:false];
+
+              CGFloat scale = UIScreen.mainScreen.scale;
+              CGSize thumbnailSize = CGSizeMake(self.frame.size.width * scale, self.frame.size.height * scale);
+
+              NSURL* url = [NSURL URLWithString:self->_previewSourceUri];
+              [imageView sd_setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveLoad context:@{SDWebImageContextImageThumbnailPixelSize : @(thumbnailSize)}];
+
+              [imageView setClipsToBounds:true];
+              [imageView setContentMode:UIViewContentModeScaleAspectFit];
+              [imageView setTranslatesAutoresizingMaskIntoConstraints:false];
+              [viewController setView:imageView];
+
+              [NSLayoutConstraint activateConstraints:@[
+                  [imageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                  [imageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                  [imageView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                  [imageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+              ]];
+
+              CGFloat width = self.bounds.size.width;
+              CGFloat height = imageView.frame.size.height * (width / imageView.frame.size.width);
+              CGSize contentSize = CGSizeMake(width, height);
+
+              [viewController setPreferredContentSize:contentSize];
+
+              return viewController;
+        }
           actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
             NSMutableArray* actions = [[NSMutableArray alloc] init];
 
