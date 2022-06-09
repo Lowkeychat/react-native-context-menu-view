@@ -1,6 +1,7 @@
 #import "ContextMenuView.h"
 #import <React/UIView+React.h>
 #import <SDWebImage/SDWebImage.h>
+#import "PreviewViewController.h"
 
 @interface ContextMenuView ()
 
@@ -55,42 +56,7 @@
   return [UIContextMenuConfiguration
           configurationWithIdentifier:nil
           previewProvider:self->_previewSourceUri == nil ? nil : ^() {
-              UIViewController* viewController = [[UIViewController alloc] init];
-              SDAnimatedImageView* imageView = [SDAnimatedImageView new];
-              imageView.sd_imageTransition = SDWebImageTransition.fadeTransition;
-              imageView.sd_imageTransition.duration = 0.25;
-              [imageView setShouldIncrementalLoad:false];
-
-              CGFloat windowWidth = UIScreen.mainScreen.bounds.size.width * UIScreen.mainScreen.scale;
-              CGFloat windowHeight = UIScreen.mainScreen.bounds.size.height * UIScreen.mainScreen.scale;
-
-              CGSize thumbnailSize = CGSizeMake(windowWidth, windowHeight);
-
-              NSURL* url = [NSURL URLWithString:self->_previewSourceUri];
-              [imageView sd_setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveLoad context:@{SDWebImageContextImageThumbnailPixelSize : @(thumbnailSize)}];
-
-              [imageView setClipsToBounds:true];
-              [imageView setContentMode:UIViewContentModeScaleAspectFit];
-              [imageView setTranslatesAutoresizingMaskIntoConstraints:false];
-              [viewController setView:imageView];
-
-              [NSLayoutConstraint activateConstraints:@[
-                    [imageView.leadingAnchor constraintEqualToAnchor:viewController.self.view.leadingAnchor],
-                    [imageView.trailingAnchor constraintEqualToAnchor:viewController.self.view.trailingAnchor],
-                    [imageView.topAnchor constraintEqualToAnchor:viewController.self.view.topAnchor],
-                    [imageView.bottomAnchor constraintEqualToAnchor:viewController.self.view.bottomAnchor]
-              ]];
-
-              CGFloat imageWidth = windowWidth;
-              CGFloat imageHeight = windowHeight;
-
-              CGFloat width = viewController.view.bounds.size.width;
-              CGFloat height = imageHeight * (width / imageWidth);
-              CGSize contentSize = CGSizeMake(width, height);
-
-              [viewController setPreferredContentSize:contentSize];
-
-              return viewController;
+              return [[PreviewViewController alloc] initWithURL:self->_previewSourceUri];
         }
           actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
             NSMutableArray* actions = [[NSMutableArray alloc] init];
