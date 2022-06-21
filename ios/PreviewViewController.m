@@ -9,10 +9,9 @@
 
 @implementation PreviewViewController
 
-- (instancetype)initWithURL:(NSString *)url previewImageSize:(NSArray *)previewImageSize {
+- (instancetype)initWithURL:(NSString *)url {
     self = [super init];
     if (self) {
-        _previewImageSize = previewImageSize;
         _url = url;
     }
     return self;
