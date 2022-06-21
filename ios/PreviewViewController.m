@@ -9,9 +9,10 @@
 
 @implementation PreviewViewController
 
-- (instancetype)initWithURL:(NSString *)url {
+- (instancetype)initWithURL:(NSString *)url previewImageSize:(NSArray *)previewImageSize {
     self = [super init];
     if (self) {
+        _previewImageSize = previewImageSize;
         _url = url;
     }
     return self;
@@ -31,21 +32,20 @@
     self.imageView.clipsToBounds = true;
 
     [self.view addSubview:self.imageView];
+
+    [NSLayoutConstraint activateConstraints:@[
+          [self.imageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+          [self.imageView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+          [self.imageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+          [self.imageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+    ]];
+
     [self.imageView sd_setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveLoad completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
-            [NSLayoutConstraint activateConstraints:@[
-                  [self.imageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                  [self.imageView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-                  [self.imageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-                  [self.imageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
-            ]];
-
             CGFloat width = self.view.bounds.size.width;
             CGFloat height = image.size.height * (width / image.size.width);
 
             [self setPreferredContentSize:CGSizeMake(width, height)];
-        } else {
-            NSLog(@"Error: %@", error);
         }
     }];
 }
