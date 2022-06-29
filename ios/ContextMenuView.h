@@ -17,6 +17,7 @@
 @property (nullable, nonatomic, copy) RCTBubblingEventBlock onCancel;
 @property (nullable, nonatomic, copy) NSArray<ContextMenuAction*>* actions;
 @property (nullable, nonatomic, copy) NSString* previewSourceUri;
+@property (nullable, nonatomic, copy) NSArray* previewSize;
 @property (nullable, nonatomic, copy) UIColor* previewBackgroundColor;
 
 @end

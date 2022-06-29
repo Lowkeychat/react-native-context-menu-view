@@ -13,6 +13,7 @@ const ContextMenu = (props) => {
           previewBackgroundColor={props.previewBackgroundColor}
           dropdownMenuMode={props.dropdownMenuMode}
           previewSourceUri={props.previewSourceUri}
+          previewSize={props.previewSize}
       >
         {props.children}
       </NativeContextMenu>

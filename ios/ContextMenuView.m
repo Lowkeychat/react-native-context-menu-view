@@ -56,7 +56,7 @@
   return [UIContextMenuConfiguration
           configurationWithIdentifier:nil
           previewProvider:self->_previewSourceUri == nil ? nil : ^() {
-              return [[PreviewViewController alloc] initWithURL:self->_previewSourceUri];
+              return [[PreviewViewController alloc] initWithURL:self->_previewSourceUri previewSize:self->_previewSize];
         }
           actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
             NSMutableArray* actions = [[NSMutableArray alloc] init];

@@ -9,10 +9,11 @@
 
 @implementation PreviewViewController
 
-- (instancetype)initWithURL:(NSString *)url {
+- (instancetype)initWithURL:(NSString *)url previewSize:(NSArray *)previewSize {
     self = [super init];
     if (self) {
         _url = url;
+        _previewSize = previewSize;
     }
     return self;
 }
@@ -24,6 +25,9 @@
     self.imageView = [SDAnimatedImageView new];
     NSURL* url = [NSURL URLWithString:_url];
 
+    if ([_previewSize count] > 1) {
+        [self calculatePreferredSizeWithWidth:[_previewSize[0] floatValue] height:[_previewSize[1] floatValue]];
+    }
     self.imageView.sd_imageTransition = SDWebImageTransition.fadeTransition;
     self.imageView.sd_imageTransition.duration = 0.25;
     self.imageView.shouldIncrementalLoad = false;
@@ -41,12 +45,16 @@
 
     [self.imageView sd_setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveLoad completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
-            CGFloat width = self.view.bounds.size.width;
-            CGFloat height = image.size.height * (width / image.size.width);
-
-            [self setPreferredContentSize:CGSizeMake(width, height)];
+            [self calculatePreferredSizeWithWidth:image.size.width height:image.size.height];
         }
     }];
+}
+
+- (void) calculatePreferredSizeWithWidth:(CGFloat) width height:(CGFloat)height {
+    CGFloat boundsWidth = self.view.bounds.size.width;
+    CGFloat nextHeight = height * (boundsWidth / width);
+
+    [self setPreferredContentSize:CGSizeMake(boundsWidth, nextHeight)];
 }
 
 - (void)viewDidLayoutSubviews {

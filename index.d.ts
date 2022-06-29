@@ -62,6 +62,10 @@ export interface ContextMenuProps extends ViewProps {
 	 * Image or GIF preview source URI
 	 */
 	previewSourceUri?: string;
+	/**
+	 * Image or GIF preview source URI initial size
+	 */
+	previewSize?: [number, number];
 }
 
 export default class ContextMenu extends Component<ContextMenuProps> { }
