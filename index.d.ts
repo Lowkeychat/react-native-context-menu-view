@@ -68,4 +68,6 @@ export interface ContextMenuProps extends ViewProps {
 	previewSize?: [number, number];
 }
 
-export default class ContextMenu extends Component<ContextMenuProps> { }
+export default class ContextMenu extends Component<ContextMenuProps> {
+	public showMenu(): void;
+}
