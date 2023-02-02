@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NativeSyntheticEvent, ViewProps, ViewStyle } from 'react-native';
+import {NativeSyntheticEvent, ViewProps, ViewStyle} from 'react-native';
 
 export interface ContextMenuAction {
 	/**
@@ -7,7 +7,7 @@ export interface ContextMenuAction {
 	 */
 	title: string;
 	/**
-	 * The icon to use on ios. This is the name of the SFSymbols icon to use. On Android nothing will happen if you set this option. 
+	 * The icon to use on ios. This is the name of the SFSymbols icon to use. On Android nothing will happen if you set this option.
 	 */
 	systemIcon?: string;
 	/**
@@ -43,7 +43,7 @@ export interface ContextMenuProps extends ViewProps {
 	 */
 	actions?: Array<ContextMenuAction>;
 	/**
-	 * Handle when an action is triggered and the menu is closed. The name of the selected action will be passed in the event. 
+	 * Handle when an action is triggered and the menu is closed. The name of the selected action will be passed in the event.
 	 */
 	onPress?: (e: NativeSyntheticEvent<ContextMenuOnPressNativeEvent>) => void;
 	/**
@@ -55,13 +55,19 @@ export interface ContextMenuProps extends ViewProps {
 	 */
 	previewBackgroundColor?: ViewStyle["backgroundColor"];
 	/**
-	 * Custom preview component.
-	 */
-	preview?: React.ReactNode;
-	/**
 	 * When enabled, uses iOS 14 menu mode, and shows the context menu on a single tap with no zoomed preview.
 	 */
 	dropdownMenuMode?: boolean;
+	/**
+	 * Image or GIF preview source URI
+	 */
+	previewSourceUri?: string;
+	/**
+	 * Image or GIF preview source URI initial size
+	 */
+	previewSize?: [number, number];
 }
 
-export default class ContextMenu extends Component<ContextMenuProps> { }
+export default class ContextMenu extends Component<ContextMenuProps> {
+	public showMenu(): void;
+}
